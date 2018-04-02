@@ -1,0 +1,11 @@
+---
+# defaults file for ansible-role-cfn-iam-group
+iam_group_description: "Probably just some iam group, you know?"
+iam_group_template_dir: "./build"
+iam_group_tags: {}
+iam_group_stack_state: "present"
+region: "us-west-2"
+iam_group_name: ""
+iam_group_path: ""
+iam_group_policy_arns: []
+iam_group_policies: {}

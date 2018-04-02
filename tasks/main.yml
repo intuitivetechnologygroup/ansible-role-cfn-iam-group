@@ -1,0 +1,23 @@
+---
+# tasks file for ansible-role-cfn-iam-group
+- name: Create build directory if not extant
+  file:
+    state: directory
+    dest: "{{ iam_group_template_dir }}"
+
+- name: Template the iam group stack
+  template:
+    src: iam_group.json.j2
+    dest: "{{ iam_group_template_dir }}/{{ iam_group_stack_name }}.json"
+
+- name: Create or remove cloudformation stack
+  cloudformation:
+    stack_name: "{{ iam_group_stack_name }}"
+    region: "{{ region }}"
+    template: "{{ iam_group_template_dir }}/{{ iam_group_stack_name }}.json"
+    security_token: "{{ lookup('env','AWS_SESSION_TOKEN')|default(omit, true) }}"
+    tags: "{{ iam_group_tags }}"
+    state: "{{ iam_group_stack_state }}"
+  register: iam_group_cf_output
+
+- debug: msg="{{ iam_group_cf_output }}" verbosity=1
